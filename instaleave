@@ -1,0 +1,87 @@
+-- =====================================================
+-- == SERVICES
+-- =====================================================
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+-- =====================================================
+-- == UI SETUP
+-- =====================================================
+local ui = Instance.new("ScreenGui")
+ui.ResetOnSpawn = false
+ui.Parent = player:WaitForChild("PlayerGui")
+
+-- == FRAME ==
+local frame = Instance.new("Frame")
+frame.Parent = ui
+frame.Size = UDim2.new(0, 260, 0, 140)
+frame.Position = UDim2.new(0.05, 0, 0.3, 0)
+frame.BackgroundColor3 = Color3.fromRGB(25, 22, 5)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
+
+-- == TITLE BAR ==
+local title = Instance.new("TextLabel")
+title.Parent = frame
+title.Size = UDim2.new(1, 0, 0, 35)
+title.BackgroundColor3 = Color3.fromRGB(210, 170, 0)
+title.Text = "malame insta leave"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+Instance.new("UICorner", title).CornerRadius = UDim.new(0, 10)
+
+-- =====================================================
+-- == FLOATING GALAXY PARTICLES
+-- =====================================================
+for i = 1, 18 do
+    local particle = Instance.new("Frame")
+    particle.Parent = frame
+    local size = math.random(3, 7)
+    particle.Size = UDim2.new(0, size, 0, size)
+    particle.Position = UDim2.new(math.random(), 0, math.random(), 0)
+    particle.BackgroundColor3 = Color3.fromRGB(
+        math.random(200, 255),
+        math.random(180, 220),
+        math.random(0, 60)
+    )
+    particle.BackgroundTransparency = math.random(0, 5) / 10
+    particle.BorderSizePixel = 0
+    particle.ZIndex = 0
+    Instance.new("UICorner", particle).CornerRadius = UDim.new(1, 0)
+
+    -- Float animation
+    local function floatParticle()
+        while true do
+            local tweenInfo = TweenInfo.new(math.random(2, 5), Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true)
+            local tween = game:GetService("TweenService"):Create(particle, tweenInfo, {
+                Position = UDim2.new(math.random(), 0, math.random(), 0)
+            })
+            tween:Play()
+            tween.Completed:Wait()
+        end
+    end
+
+    task.spawn(floatParticle)
+end
+
+-- =====================================================
+-- == LEAVE GAME BUTTON
+-- =====================================================
+local leaveBtn = Instance.new("TextButton")
+leaveBtn.Parent = frame
+leaveBtn.Size = UDim2.new(1, -20, 0, 50)
+leaveBtn.Position = UDim2.new(0, 10, 0, 60)
+leaveBtn.BackgroundColor3 = Color3.fromRGB(210, 170, 0)
+leaveBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+leaveBtn.Font = Enum.Font.GothamBold
+leaveBtn.TextScaled = true
+leaveBtn.Text = "Leave Game"
+leaveBtn.ZIndex = 2
+Instance.new("UICorner", leaveBtn).CornerRadius = UDim.new(0, 10)
+
+leaveBtn.MouseButton1Click:Connect(function()
+    player:Kick("malame insta leave: https://discord.gg/CEsX3DvrF2")
+end)
